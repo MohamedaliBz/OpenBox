@@ -1,0 +1,32 @@
+.codePut{
+    width: 3.5rem;
+    height: 3.5rem;
+    border:solid 0.1rem #d6d6d6;
+    border-radius: 0.2rem;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+.verif-code-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+.erreurMsg{
+    margin-bottom: 1rem;
+}
+
+.resend-btn{
+    border: none;
+    background-color: transparent;
+    color: red;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.resend{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 0.3rem 
+}

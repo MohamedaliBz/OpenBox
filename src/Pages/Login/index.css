@@ -1,0 +1,63 @@
+.login{
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+
+}
+.formLogin{
+margin-top: 10rem;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+gap: 1rem;
+}
+
+.msgRemember{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 3rem;
+}
+.check{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.2rem;
+}
+.check input{
+    width: 1rem;
+    height: 1rem;
+}
+.msg{
+font-size: 1rem;
+color: gray;
+}
+.forgot{
+    font-size: 0.8rem;
+    border:none;
+    background-color: transparent;
+    color: blue;
+}
+
+.forgot:hover{
+    cursor: pointer;
+}
+
+.log{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+  }
+
+.signup-btn{
+    border: none;
+    background-color: transparent;
+    color: blue;
+    font-size: 1rem;
+}
+
+.signup-btn:hover{
+    cursor: pointer;
+}
