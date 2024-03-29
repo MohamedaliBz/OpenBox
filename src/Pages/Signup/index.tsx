@@ -7,7 +7,7 @@ export default function createAccount() {
   return (
     <div className='login'>
         <Logo/>
-        <form className='formLogin'>
+        <div className='formLogin'>
 
             <Title title={'Create an account'} subTitle={'Start your 30-day free trial.'}/>
             <div className='form'>
@@ -19,7 +19,7 @@ export default function createAccount() {
                   <NavLink to="/login"><button className='signup-btn' >Log in</button></NavLink> 
               </div>
           </div>
-        </form>
+        </div>
     </div>
   )
 }

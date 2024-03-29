@@ -25,3 +25,6 @@ function AppRoutes() {
   }
   
   export default AppRoutes
+
+
+  // zKZrJW0OpMRvJcfJ : supabase password
