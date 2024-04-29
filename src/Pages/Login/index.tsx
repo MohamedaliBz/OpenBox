@@ -9,7 +9,7 @@ export default function Login() {
   return (
     <div className='login'>
         <Logo/>
-        <form className='formLogin'>
+        <div className='formLogin'>
 
             <Title title={'Log in to your account'} subTitle={'Welcome back! Please enter your details.'}/>
 
@@ -30,7 +30,7 @@ export default function Login() {
                     <NavLink to="/signup"><button className='signup-btn' >Sign up</button></NavLink> 
                 </div>
           </div>
-        </form>
+        </div>
     </div>
   )
 }

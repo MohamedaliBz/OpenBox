@@ -1,9 +1,11 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import google from '../../Assets/images/google.png';
 import './index.css';
-// import supabase from '../../utils/api';
+import supabase from '../../Utils/supabase';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 interface MyFormProps {
     children?: ReactNode; 
@@ -21,12 +23,42 @@ export const  MyForm: React.FC<MyFormProps> =  ({ children, nameButton }: MyForm
         password: ''
     };
 
-    const [error, setError] = useState<string | null>(null);
-    const [successMessage, setSuccessMessage] = useState<string | null>(null);
-
+    const navigate = useNavigate();
     const handleSubmit = async (values: MyFormValues) => {
-    };
+        const { email, password } = values;
+        try {
+            const { data,error } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            });
 
+            if (error) {
+                toast.error(`Sign in failed. ${error?.message}.`,
+            {
+                autoClose:3000 , 
+                position:'top-center' ,
+                // onClose: () => {window.location.reload();}         
+            });
+                throw error;
+            }
+                console.log('User signed in:', data.user);  
+                toast.success('Sign in successful !',
+                {autoClose:3000 , 
+                position:'top-center',
+                });
+
+                // Sets the session data from the current session. If the current session is expired, 
+                // setSession will take care of refreshing it to obtain a new session.
+                const settedSession = await supabase.auth.setSession({
+                    access_token : data?.session.access_token,
+                    refresh_token: data?.session.refresh_token,
+                })
+                console.log({settedSession});
+                navigate('/home')
+        } catch (error) {  
+            console.log({error}); 
+        }
+    };
     return (
         <div>
             <Formik
@@ -42,19 +74,18 @@ export const  MyForm: React.FC<MyFormProps> =  ({ children, nameButton }: MyForm
                         <div>
                             <label htmlFor="email">Email</label>
                             <Field type="email" name="email" className='put' placeholder="Enter your email" />
-                            {touched?.email && <ErrorMessage name="email" component="p" className="erreurMsg" />}
+                            <ErrorMessage name="email" component="p" className="erreurMsg" />
                         </div>
 
                         <div>
                             <label htmlFor="password">Password</label>
                             <Field type="password" name="password" className='put' placeholder="Enter your password" />
-                            {touched?.password && <ErrorMessage name="password" component="p" className='erreurMsg' />}
+                            <ErrorMessage name="password" component="p" className='erreurMsg' />
                         </div>
-                        
                         <div>{children}</div>
                         <div className='button'>
                             <button className='start' type="submit" >{nameButton}</button>
-                            <button className='emailButton'><img src={google} className='google' />Sign in with Google</button>
+                            <button className='emailButton'><img src={google} className='google' alt=''/>Sign in with Google</button>
                         </div>
                     </Form>
                 )}

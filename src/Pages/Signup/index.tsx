@@ -4,6 +4,7 @@ import Title from "../../Components/CommonFormElement/title"
 import { SignupForm } from "../../Components/SignupForm"
 
 export default function createAccount() {
+
   return (
     <div className='login'>
         <Logo/>
@@ -20,6 +21,7 @@ export default function createAccount() {
               </div>
           </div>
         </div>
+
     </div>
   )
 }

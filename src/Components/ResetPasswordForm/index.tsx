@@ -1,6 +1,9 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import supabase from '../../Utils/supabase';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 interface MyFormProps {
     nameButton?: string;
@@ -15,7 +18,32 @@ export const  ResetPassForm: React.FC<MyFormProps> =  ({ nameButton }: MyFormPro
         password: '',
         confirmpassword: ''
     };
-    const handleSubmit = async (values: MyFormValues) => {};
+    const navigate = useNavigate()
+    const handleSubmit = async (values: MyFormValues) => {
+        const {password } = values
+        try {
+            const { data, error } = await supabase.auth.updateUser({
+                password: password
+            });
+            if (error) {
+                toast.error(`Error while updating password:', ${error.message}`,
+                {   autoClose:3000 , 
+                    position:'top-center',
+                    });
+            } else {
+                toast.success(`Password updated successfully `, 
+                {   autoClose:3000 , 
+                    position:'top-center',
+                    onClose : () => {
+                        navigate('/login'); // Redirect to login page using navigate after closing the toast
+                    }
+                    });
+            }
+                console.log(data);
+        } catch (error) {
+            toast.error(`Error updating password: ${error}` );
+        }
+    };
     
     return (
         <div>
@@ -27,7 +55,7 @@ export const  ResetPassForm: React.FC<MyFormProps> =  ({ nameButton }: MyFormPro
                 })}
                 onSubmit={handleSubmit}
             >
-                {({ errors, touched }) => (
+                {({ errors, touched , isValid}) => (
                     <Form className='inputForm'>
                         <div>
                             <label htmlFor="password">Password</label>
@@ -42,7 +70,7 @@ export const  ResetPassForm: React.FC<MyFormProps> =  ({ nameButton }: MyFormPro
                         </div>
 
                         <div className='button'>
-                            <button className='start' type="submit" >{nameButton}</button>
+                            <button className='start' type="submit" disabled={!isValid}>{nameButton}</button>
                         </div>
                     </Form>
                 )}
