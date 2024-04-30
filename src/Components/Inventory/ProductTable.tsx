@@ -1,40 +1,116 @@
-import filter from '../../Assets/icons/filter-icon.png'
+import filter from '../../Assets/icons/filter.svg'
 
+// import {Button}  from "@material-tailwind/react";
 
 interface ButtonProps {
-    onClick: () => void;
+    // onClick: () => void;
     icon : string
     name: string; 
   }
-const Button: React.FC<ButtonProps> = (props:ButtonProps) => {
+const Buttton: React.FC<ButtonProps> = (props:ButtonProps) => {
     return (
         <div className="absolute top-[19px] left-[848px] rounded flex flex-row items-start justify-start text-grey-grey-600 border-[1px] border-solid border-grey-grey-100">
-            <div className="shadow-[0px_1px_2px_rgba(16,_24,_40,_0.05)] rounded-lg overflow-hidden flex flex-row items-center justify-center py-2.5 px-4 gap-[8px]">
-            <img
-                className="w-5 relative h-5 overflow-hidden shrink-0"
-                alt=""
-                src={props.icon}
-            />
-            <button onClick={props.onClick} className="relative leading-[20px] font-medium">{props.name}</button>
-            </div>
+            <button>
+               <div className="shadow-[0px_1px_2px_rgba(16,_24,_40,_0.05)] rounded-lg overflow-hidden flex flex-row items-center justify-center py-2.5 px-4 gap-[8px]">
+                    <img
+                        className="w-5 relative h-5 overflow-hidden shrink-0"
+                        alt=""
+                        src={props.icon}
+                    />
+                    <div className="relative leading-[20px] font-medium">
+                        {props.name}
+                    </div> 
+                </div>
+            </button>
       </div>
     );
   };
+  interface Product {
+    name: string;
+    buyingPrice: number;
+    quantity: number;
+    thresholdValue: number;
+    expiryDate: string;
+    availability: string;
+  }
+  
 
+  const Table: React.FC<{ items: Product[] }> = ({ items }) => {
+    return (
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead>
+          <tr>
+            <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Name</th>
+            <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Buying Price</th>
+            <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+            <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Threshold Value</th>
+            <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Expiry Date</th>
+            <th className="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Availability</th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {items.map((item, index) => (
+            <tr key={index}>
+              <td className="px-6 py-4 whitespace-no-wrap">{item.name}</td>
+              <td className="px-6 py-4 whitespace-no-wrap">{item.buyingPrice}</td>
+              <td className="px-6 py-4 whitespace-no-wrap">{item.quantity}</td>
+              <td className="px-6 py-4 whitespace-no-wrap">{item.thresholdValue}</td>
+              <td className="px-6 py-4 whitespace-no-wrap">{item.expiryDate}</td>
+              <td className="px-6 py-4 whitespace-no-wrap">{item.availability}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  };
+
+  const products: Product[] = [
+    {
+      name: 'Maggi',
+      buyingPrice: 430,
+      quantity: 43,
+      thresholdValue: 12,
+      expiryDate: '11/12/22',
+      availability: 'In-stock',
+    },
+    {
+      name: 'Bru',
+      buyingPrice: 257,
+      quantity: 22,
+      thresholdValue: 12,
+      expiryDate: '21/12/22',
+      availability: 'Out of stock',
+    },
+  ]
 
 export default function ProductTable() {
   return (
 
-    <div className="absolute top-[332px] left-[312px] rounded-lg bg-white w-[1096px] h-[606px] text-sm text-grey-grey-700">
-        <div className="absolute top-[19px] left-[962px] rounded flex flex-row items-start justify-start text-grey-grey-600 border-[1px] border-solid border-grey-grey-100">
-          <div className="shadow-[0px_1px_2px_rgba(16,_24,_40,_0.05)] rounded-lg overflow-hidden flex flex-row items-center justify-center py-2.5 px-4">
-            <div className="relative leading-[20px] font-medium">
-              Download all
-            </div>
-          </div>
+    <>
+
+        
+        <div className="absolute top-[19px] left-[848px] rounded flex flex-row items-start justify-start text-grey-grey-600 border-[1px] border-solid border-grey-grey-100">
+            <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
+                <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6H14M1.5 1H16.5M6.5 11H11.5" stroke="#5D6679" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>Filtres</span>
+            </button>
         </div>
-        <Button icon={filter} name='Filters' onClick={()=>console.log( "Filters clicked !")}/>
-        <div className="absolute top-[81px] left-[17px] leading-[20px] font-medium text-grey-grey-500">
+
+        <div className=" rounded flex flex-row items-start justify-start text-grey-grey-600 border-[1px] border-solid border-grey-grey-100">
+                <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
+                    <svg className="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"/></svg>
+                    <span>Download</span>
+                </button>
+        </div>
+
+        <div className="absolute top-[28px] left-[16px] text-xl leading-[30px] font-medium text-grey-grey-800">
+          Products
+        </div>
+
+        <button className="absolute top-[19px] left-[720px] rounded bg-sky-500 w-[115px] flex flex-row items-center justify-center py-2.5 px-4 box-border text-white bg-color[blue]">
+          <div className="relative leading-[20px] font-medium">Add Product</div>
+        </button>
+        {/* <div className="absolute top-[81px] left-[17px] leading-[20px] font-medium text-grey-grey-500">
           Products
         </div>
         <div className="absolute top-[81px] left-[219px] leading-[20px] font-medium text-grey-grey-500">
@@ -42,150 +118,6 @@ export default function ProductTable() {
         </div>
         <div className="absolute top-[81px] left-[416px] leading-[20px] font-medium text-grey-grey-500">
           Quantity
-        </div>
-        <div className="absolute top-[178px] left-[983px] leading-[20px] font-medium text-error-error-600">
-          Out of stock
-        </div>
-        <div className="absolute top-[225px] left-[983px] leading-[20px] font-medium text-success-success-600">
-          In- stock
-        </div>
-        <div className="absolute top-[274px] left-[983px] leading-[20px] font-medium text-error-error-600">
-          Out of stock
-        </div>
-        <div className="absolute top-[322px] left-[983px] leading-[20px] font-medium text-success-success-600">
-          In- stock
-        </div>
-        <div className="absolute top-[370px] left-[983px] leading-[20px] font-medium text-success-success-600">
-          In- stock
-        </div>
-        <div className="absolute top-[418px] left-[983px] leading-[20px] font-medium text-error-error-600">
-          Out of stock
-        </div>
-        <div className="absolute top-[466px] left-[983px] leading-[20px] font-medium text-success-success-600">
-          In- stock
-        </div>
-        <div className="absolute top-[514px] left-[983px] leading-[20px] font-medium text-peru whitespace-pre-wrap">
-          Low stock
-        </div>
-        <div className="absolute top-[178px] left-[17px] leading-[20px] font-medium">
-          Bru
-        </div>
-        <div className="absolute top-[178px] left-[219px] leading-[20px] font-medium">
-          ₹257
-        </div>
-        <div className="absolute top-[178px] left-[807px] leading-[20px] font-medium">
-          21/12/22
-        </div>
-        <div className="absolute top-[178px] left-[594px] leading-[20px] font-medium">
-          12 Packets
-        </div>
-        <div className="absolute top-[178px] left-[415px] leading-[20px] font-medium">
-          22 Packets
-        </div>
-        <div className="absolute top-[225px] left-[17px] leading-[20px] font-medium">
-          Red Bull
-        </div>
-        <div className="absolute top-[225px] left-[218px] leading-[20px] font-medium">
-          ₹405
-        </div>
-        <div className="absolute top-[225px] left-[807px] leading-[20px] font-medium">
-          5/12/22
-        </div>
-        <div className="absolute top-[225px] left-[598px] leading-[20px] font-medium">
-          9 Packets
-        </div>
-        <div className="absolute top-[225px] left-[414px] leading-[20px] font-medium">
-          36 Packets
-        </div>
-        <div className="absolute top-[274px] left-[17px] leading-[20px] font-medium">
-          Bourn Vita
-        </div>
-        <div className="absolute top-[274px] left-[218px] leading-[20px] font-medium">
-          ₹502
-        </div>
-        <div className="absolute top-[274px] left-[807px] leading-[20px] font-medium">
-          8/12/22
-        </div>
-        <div className="absolute top-[274px] left-[598px] leading-[20px] font-medium">
-          6 Packets
-        </div>
-        <div className="absolute top-[274px] left-[416px] leading-[20px] font-medium">
-          14 Packets
-        </div>
-        <div className="absolute top-[322px] left-[17px] leading-[20px] font-medium">
-          Horlicks
-        </div>
-        <div className="absolute top-[322px] left-[218px] leading-[20px] font-medium">
-          ₹530
-        </div>
-        <div className="absolute top-[322px] left-[807px] leading-[20px] font-medium">
-          9/1/23
-        </div>
-        <div className="absolute top-[322px] left-[598px] leading-[20px] font-medium">
-          5 Packets
-        </div>
-        <div className="absolute top-[322px] left-[420px] leading-[20px] font-medium">
-          5 Packets
-        </div>
-        <div className="absolute top-[370px] left-[17px] leading-[20px] font-medium">
-          Harpic
-        </div>
-        <div className="absolute top-[370px] left-[218px] leading-[20px] font-medium">
-          ₹605
-        </div>
-        <div className="absolute top-[370px] left-[807px] leading-[20px] font-medium">
-          9/1/23
-        </div>
-        <div className="absolute top-[370px] left-[598px] leading-[20px] font-medium">
-          5 Packets
-        </div>
-        <div className="absolute top-[370px] left-[416px] leading-[20px] font-medium">
-          10 Packets
-        </div>
-        <div className="absolute top-[418px] left-[17px] leading-[20px] font-medium">
-          Ariel
-        </div>
-        <div className="absolute top-[418px] left-[218px] leading-[20px] font-medium">
-          ₹408
-        </div>
-        <div className="absolute top-[418px] left-[807px] leading-[20px] font-medium">
-          15/12/23
-        </div>
-        <div className="absolute top-[418px] left-[599px] leading-[20px] font-medium">
-          7 Packets
-        </div>
-        <div className="absolute top-[418px] left-[415px] leading-[20px] font-medium">
-          23 Packets
-        </div>
-        <div className="absolute top-[466px] left-[17px] leading-[20px] font-medium">
-          Scotch Brite
-        </div>
-        <div className="absolute top-[466px] left-[218px] leading-[20px] font-medium">
-          ₹359
-        </div>
-        <div className="absolute top-[466px] left-[807px] leading-[20px] font-medium">
-          6/6/23
-        </div>
-        <div className="absolute top-[466px] left-[598px] leading-[20px] font-medium">
-          8 Packets
-        </div>
-        <div className="absolute top-[466px] left-[414px] leading-[20px] font-medium">
-          43 Packets
-        </div>
-        <div className="absolute top-[514px] left-[17px] leading-[20px] font-medium">
-          Coca cola
-        </div>
-        <div className="absolute top-[514px] left-[218px] leading-[20px] font-medium">
-          ₹205
-        </div>
-        <div className="absolute top-[514px] left-[807px] leading-[20px] font-medium">
-          11/11/22
-        </div>
-        <div className="absolute top-[514px] left-[594px] leading-[20px] font-medium">
-          10 Packets
-        </div>
-        <div className="absolute top-[514px] left-[416px] leading-[20px] font-medium">
-          41 Packets
         </div>
         <div className="absolute top-[81px] left-[594px] leading-[20px] font-medium text-grey-grey-500">
           Threshold Value
@@ -195,88 +127,8 @@ export default function ProductTable() {
         </div>
         <div className="absolute top-[81px] left-[983px] leading-[20px] font-medium text-grey-grey-500">
           Availability
-        </div>
-        <img
-          className="absolute top-[116px] left-[0px] max-h-full w-[1096px]"
-          alt=""
-          src="/vector-40.svg"
-        />
-        <img
-          className="absolute top-[164px] left-[0px] max-h-full w-[1096px]"
-          alt=""
-          src="/vector-40.svg"
-        />
-        <img
-          className="absolute top-[212px] left-[0px] max-h-full w-[1096px]"
-          alt=""
-          src="/vector-40.svg"
-        />
-        <img
-          className="absolute top-[260px] left-[0px] max-h-full w-[1096px]"
-          alt=""
-          src="/vector-40.svg"
-        />
-        <img
-          className="absolute top-[308px] left-[0px] max-h-full w-[1096px]"
-          alt=""
-          src="/vector-40.svg"
-        />
-        <img
-          className="absolute top-[356px] left-[0px] max-h-full w-[1096px]"
-          alt=""
-          src="/vector-40.svg"
-        />
-        <img
-          className="absolute top-[404px] left-[0px] max-h-full w-[1096px]"
-          alt=""
-          src="/vector-40.svg"
-        />
-        <img
-          className="absolute top-[452px] left-[0px] max-h-full w-[1096px]"
-          alt=""
-          src="/vector-40.svg"
-        />
-        <img
-          className="absolute top-[500px] left-[0px] max-h-full w-[1096px]"
-          alt=""
-          src="/vector-40.svg"
-        />
-        <div className="absolute top-[28px] left-[16px] text-xl leading-[30px] font-medium text-grey-grey-800">
-          Products
-        </div>
-        <div className="absolute top-[130px] left-[17px] leading-[20px] font-medium">
-          Maggi
-        </div>
-        <div className="absolute top-[130px] left-[218px] leading-[20px] font-medium">
-          ₹430
-        </div>
-        <div className="absolute top-[130px] left-[414px] leading-[20px] font-medium">
-          43 Packets
-        </div>
-        <div className="absolute top-[130px] left-[594px] leading-[20px] font-medium">
-          12 Packets
-        </div>
-        <div className="absolute top-[130px] left-[807px] leading-[20px] font-medium">
-          11/12/22
-        </div>
-        <div className="absolute top-[130px] left-[983px] leading-[20px] font-medium text-success-success-600">
-          In- stock
-        </div>
-        <div className="absolute top-[19px] left-[720px] rounded bg-primary-primary-600 w-[115px] flex flex-row items-center justify-center py-2.5 px-4 box-border text-white">
-          <div className="relative leading-[20px] font-medium">Add Product</div>
-        </div>
-        <div className="absolute top-[556px] left-[1014px] shadow-[0px_1px_2px_rgba(16,_24,_40,_0.05)] rounded bg-white overflow-hidden flex flex-row items-center justify-center py-[9px] px-[17px] border-[1px] border-solid border-grey-grey-100">
-          <div className="relative leading-[20px] font-medium">Next</div>
-        </div>
-        <div className="absolute top-[565px] left-[503px] leading-[20px]">
-          <span>{`Page `}</span>
-          <span className="font-medium">1</span>
-          <span>{` of `}</span>
-          <span className="font-medium">10</span>
-        </div>
-        <div className="absolute top-[556px] left-[17px] shadow-[0px_1px_2px_rgba(16,_24,_40,_0.05)] rounded bg-white overflow-hidden flex flex-row items-center justify-center py-[9px] px-[17px] border-[1px] border-solid border-grey-grey-100">
-          <div className="relative leading-[20px] font-medium">Previous</div>
-        </div>
-      </div>
+        </div> */}
+
+    </>
   )
 }

@@ -17,7 +17,7 @@ export default function SideBar() {
    }
   return (
 
-      <div className="absolute top-[0px] left-[0px] rounded-tl-none rounded-tr-lg rounded-br-lg rounded-bl-none bg-white box-border w-[280px] h-[860px] flex flex-col items-start justify-between pt-6 px-6 pb-8 text-grey-grey-600 border-r-[1px] border-solid border-grey-grey-50">
+      <div className="rounded-tl-none rounded-tr-lg rounded-br-lg rounded-bl-none bg-white box-border w-[280px] h-[860px] flex flex-col items-start justify-between pt-6 px-6 pb-8 text-grey-grey-600 border-r-[1px] border-solid border-grey-grey-50">
          <div className="flex flex-col items-start justify-start gap-[20px]">
             <img className="w-[68px] relative h-[51px] object-contain" alt="small-logo" src={box}/>
             <div className="w-[232px] flex flex-row items-center justify-start py-2 px-4 box-border">

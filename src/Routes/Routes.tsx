@@ -11,7 +11,7 @@ function AppRoutes() {
     return (
       <Router>
           <Routes>
-            <Route path="inventory" element={<Invent/>}/>
+            <Route path="/inventory" element={<Invent/>}/>
             <Route path="/" element={<Login/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/signup" element={<Signup/>}/>
@@ -23,6 +23,5 @@ function AppRoutes() {
     )
   }
   export default AppRoutes
-
 
   // zKZrJW0OpMRvJcfJ : supabase password
