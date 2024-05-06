@@ -54,7 +54,7 @@ export const  MyForm: React.FC<MyFormProps> =  ({ children, nameButton }: MyForm
                     refresh_token: data?.session.refresh_token,
                 })
                 console.log({settedSession});
-                navigate('/home')
+                navigate('/inventory')
         } catch (error) {  
             console.log({error}); 
         }
