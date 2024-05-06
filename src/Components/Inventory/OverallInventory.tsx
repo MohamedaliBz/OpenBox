@@ -1,14 +1,14 @@
 
 const OverallInventory = () => {
   return (
-    <>
-      <div className="text-grey-800">
+
+      <div className="text-lg text-grey-800 flex flex-col justify-center border border-solid border-gray-200 rounded-lg w-[80%] ml-[20rem] mt-[-47rem] p-8 bg-white ">
 
             <div className=" text-xl leading-[30px] font-medium">
               Overall Inventory
             </div>
 
-        <div className="flex justify-center items-center gap-[3rem] mt-[1rem]">
+        <div className="flex justify-center items-center gap-[5rem] mt-[1rem]">
           
           <div className="w-[108px] flex flex-col items-start justify-start gap-[12px] text-primary-primary-500">
             <div className="relative leading-[24px] font-semibold text-blue-600">
@@ -77,7 +77,6 @@ const OverallInventory = () => {
 
         </div>
       </div>
-    </>
   )
 }
 

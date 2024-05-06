@@ -30,7 +30,7 @@ export default function Header() {
   };
   return (
     <>
-      <div className=" w-[100%] h-[7rem] flex flex-row items-center justify-between py-0 px-8 box-border">
+      <div className=" w-[100%] h-[6rem] flex flex-row items-center justify-between py-0 px-8 box-border bg-white ml-1 ">
       
         {/* search bar  */}
         <div className="group relative">

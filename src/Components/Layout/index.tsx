@@ -9,7 +9,7 @@ type Props = {
 export default function Layout({children}: Props) {
   return (
     <>
-        <div className='flex justify-between'>
+        <div className='flex justify-between bg-gray-200'>
           <SideBar/>
           <Header/>
         </div>
