@@ -48,7 +48,8 @@ color: gray;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: .4rem;
+    gap: .6rem;
+    margin-top: 1rem;
   }
 
 .signup-btn{

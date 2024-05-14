@@ -2,7 +2,7 @@
 const OverallInventory = () => {
   return (
 
-      <div className="text-lg text-grey-800 flex flex-col justify-center border border-solid border-gray-200 rounded-lg w-[80%] ml-[20rem] mt-[-47rem] p-8 bg-white ">
+      <div className="text-lg text-grey-800 flex flex-col justify-center border border-solid border-gray-200 rounded-lg w-[80%] ml-[20rem] mt-[-47rem] p-4 bg-white ">
 
             <div className=" text-xl leading-[30px] font-medium">
               Overall Inventory

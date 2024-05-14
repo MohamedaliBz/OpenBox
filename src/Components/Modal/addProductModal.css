@@ -1,0 +1,12 @@
+.ant-modal-content{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+}
+.ant-modal-body{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem 4rem;
+}

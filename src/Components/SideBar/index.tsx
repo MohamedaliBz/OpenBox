@@ -23,11 +23,11 @@ export default function SideBar() {
             <div className="w-[232px] flex flex-row items-center justify-start py-2 px-4 box-border">
                <div className="flex-1 flex flex-col items-start justify-center gap-[12px]">
 
-                  <NavLink to="/">
+                  <NavLink to="/dashboard" className={window.location.pathname === "/dashboard" ? "text-[#1570EF]" : ""}>
                      <Element icon={home} name={'Dashobard'}  />
                   </NavLink>
-                  <NavLink to="/inventory">
-                     <Element icon={inventory} name={'Inventory'}  />
+                  <NavLink to="/inventory" className={window.location.pathname === "/inventory" ? "text-[#1570EF]" : ""}>
+                     <Element icon={inventory} name={'Inventory'}/>
                   </NavLink>
                    <NavLink to="/">
                      <Element icon={report} name={'Reports'}  />

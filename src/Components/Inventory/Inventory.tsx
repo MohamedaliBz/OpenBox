@@ -7,7 +7,7 @@ export default function Inventory() {
   return (
     <>
       <OverallInventory/>
-      
+      <ProductTable/>
     </>
 
   )

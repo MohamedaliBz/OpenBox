@@ -5,6 +5,7 @@ import NotFound from "../Pages/NotFound"
 import ForgotPassword from "../Pages/ForgotPassword/forgotPassword"
 import ResetPassword from "../Pages/ForgotPassword/resetPassword"
 import Invent from "../Pages/Home/Inventory"
+import Dashboard from "../Pages/Home/Dashboard"
 
 
 function AppRoutes() {
@@ -12,6 +13,7 @@ function AppRoutes() {
       <Router>
           <Routes>
             <Route path="/inventory" element={<Invent/>}/>
+            <Route path="/dashboard" element={<Dashboard/>}/>
             <Route path="/" element={<Login/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/signup" element={<Signup/>}/>
