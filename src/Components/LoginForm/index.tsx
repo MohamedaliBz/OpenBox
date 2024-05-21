@@ -6,6 +6,8 @@ import './index.css';
 import supabase from '../../Utils/supabase';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { Input, message } from 'antd';
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 
 interface MyFormProps {
     children?: ReactNode; 
@@ -22,10 +24,10 @@ export const  MyForm: React.FC<MyFormProps> =  ({ children, nameButton }: MyForm
         email: '',
         password: ''
     };
-
+    
     const navigate = useNavigate();
     const handleSubmit = async (values: MyFormValues) => {
-        const { email, password } = values;
+        const { email,password } = values;
         try {
             const { data,error } = await supabase.auth.signInWithPassword({
                 email,
@@ -42,23 +44,20 @@ export const  MyForm: React.FC<MyFormProps> =  ({ children, nameButton }: MyForm
                 throw error;
             }
                 console.log('User signed in:', data.user);  
-                toast.success('Sign in successful !',
-                {autoClose:3000 , 
-                position:'top-center',
-                });
-
+                message.success('Sign in successful !',);
                 // Sets the session data from the current session. If the current session is expired, 
                 // setSession will take care of refreshing it to obtain a new session.
                 const settedSession = await supabase.auth.setSession({
                     access_token : data?.session.access_token,
                     refresh_token: data?.session.refresh_token,
                 })
-                console.log({settedSession});
+                console.log(" Setted Session :" ,settedSession);
                 navigate('/inventory')
-        } catch (error) {  
+        } catch (error) { 
             console.log({error}); 
         }
     };
+    
     return (
         <div>
             <Formik

@@ -6,6 +6,8 @@ import reportWebVitals from './reportWebVitals';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { AuthProvider } from './Context/AuthProvider';
+
 
 // Create a new instance of QueryClient
 const queryClient = new QueryClient();
@@ -18,8 +20,10 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     {/* This sets up React Query in our application by creating a QueryClient instance and wrapping the App component with QueryClientProvider */}
-    <QueryClientProvider client={queryClient}> 
-      <App />
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </QueryClientProvider>
     <ToastContainer />
   </React.StrictMode>

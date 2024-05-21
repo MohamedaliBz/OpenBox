@@ -15,7 +15,7 @@ export default function Login() {
 
             <div className='form'>
     
-                <MyForm nameButton='Sign in'>
+                <MyForm nameButton='Log in'>
                     <div className='msgRemember'>
                         <div className='check'>
                             <input type="checkbox" />
@@ -27,7 +27,7 @@ export default function Login() {
 
                 <div className='log'>
                     <p className='msg'>Don’t have an account? </p>
-                    <NavLink to="/signup"><button className='signup-btn' >Sign up</button></NavLink> 
+                    <NavLink to="/signup"><button className='signup-btn' >Sign in</button></NavLink> 
                 </div>
           </div>
         </div>

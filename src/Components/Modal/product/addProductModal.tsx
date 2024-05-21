@@ -5,12 +5,9 @@ import type { InputRef } from 'antd';
 import { Moment } from 'moment';
 import './addProductModal.css'
 import { useMutation, useQueryClient } from 'react-query';
-import { createProduct } from '../../Api/productService'; // Import the createProduct function
+import { createProduct } from '../../../Api/productService'; // Import the createProduct function
 
 let index = 0;
-
-const { Option } = Select;
-
 interface AddProductModalProps {
   open: boolean;
   onClose: () => void;
@@ -108,7 +105,6 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ open, onClose }) => {
         >
          {/* Form fields */}
         <Input placeholder="Enter product name" name="name" onChange={handleInputChange} />
-
         <Select
         placeholder="Select product category"
         dropdownRender={(menu) => (

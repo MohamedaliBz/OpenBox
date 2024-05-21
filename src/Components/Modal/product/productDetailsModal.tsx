@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { Modal, Descriptions, Space, Button, Input } from 'antd';
-import { Product } from '../../Interfaces/Products';
+import { Product } from '../../../Interfaces/Products';
 import './productDetailsModal.css'
 import { EditTwoTone } from '@ant-design/icons';
-import { toast } from 'react-toastify';
-import { updateProduct } from '../../Api/productService'; // Import the createProduct function
+import { updateProduct } from '../../../Api/productService'; // Import the createProduct function
 
 
 type ProductDetailsModalProps = {
@@ -119,7 +118,6 @@ const { mutate: updateProd } = useMutation(updateProduct, {
                     +216 22 279 263
                 </Descriptions.Item>
             </Descriptions>
-            
             
         </>
         ) : 

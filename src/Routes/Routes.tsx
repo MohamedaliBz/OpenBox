@@ -6,6 +6,8 @@ import ForgotPassword from "../Pages/ForgotPassword/forgotPassword"
 import ResetPassword from "../Pages/ForgotPassword/resetPassword"
 import Invent from "../Pages/Home/Inventory"
 import Dashboard from "../Pages/Home/Dashboard"
+import Suppliers from "../Pages/Home/Suppliers"
+import Users from "../Pages/Home/Users"
 
 
 function AppRoutes() {
@@ -14,6 +16,8 @@ function AppRoutes() {
           <Routes>
             <Route path="/inventory" element={<Invent/>}/>
             <Route path="/dashboard" element={<Dashboard/>}/>
+            <Route path="/suppliers" element={<Suppliers/>}/>
+            <Route path="/users" element = {<Users/>}/>
             <Route path="/" element={<Login/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/signup" element={<Signup/>}/>

@@ -1,17 +1,16 @@
 import{ useEffect, useRef, useState } from 'react';
-import {DeleteTwoTone, ExclamationCircleFilled, FilterTwoTone, SearchOutlined } from '@ant-design/icons';
+import {DeleteTwoTone, ExclamationCircleFilled , SearchOutlined } from '@ant-design/icons';
 import type { InputRef, TableColumnsType, TableColumnType } from 'antd';
 import { Button,  Input, Modal, Select, Space, Table, Tag } from 'antd';
 import type { FilterDropdownProps } from 'antd/es/table/interface';
 import Highlighter from 'react-highlight-words';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import  {fetchProducts} from '../../Api/productService';
+import  {fetchProducts , deleteProduct} from '../../Api/productService';
 import { MdOutlineAddTask } from "react-icons/md";
 import { FaDownload, FaFilter } from "react-icons/fa6";
-import AddProductModal from '../Modal/addProductModal';
+import AddProductModal from '../Modal/product/addProductModal';
 import { Product } from '../../Interfaces/Products';
-import { deleteProduct } from '../../Api/productService';
-import { ProductDetailsModal } from '../Modal/productDetailsModal';
+import { ProductDetailsModal } from '../Modal/product/productDetailsModal';
 import './ProductTable.css'
 import Papa from 'papaparse';
 import { saveAs } from 'file-saver';
@@ -269,21 +268,11 @@ const ProductTable = () => {
   };
 
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
-  
   const handleCloseDetailsModal = () => {
     setIsDetailsModalOpen(false);
   };
   
-  // Helper function to determine the availability status of a product
-  const getAvailabilityStatus = (product: Product) => {
-    if (product.quantity === 0) {
-      return 'Out of Stock';
-    } else if (product.quantity < product.threshold_value) {
-      return 'Low Stock';
-    } else {
-      return 'In Stock';
-    }
-  };
+  
 
   const handleDownload = () => {
     if (!data) {
@@ -307,10 +296,18 @@ const dataWithAvailabilityStatus = data.map(product => ({
   // Save the file
   saveAs(blob, 'products.csv');
   }
-
+  // Helper function to determine the availability status of a product
+  const getAvailabilityStatus = (product: Product) => {
+    if (product.quantity === 0) {
+      return 'Out of Stock';
+    } else if (product.quantity < product.threshold_value) {
+      return 'Low Stock';
+    } else {
+      return 'In Stock';
+    }
+  };
   // Define filter options type
   type FilterOption = 'All' | 'In Stock' | 'Low Stock' | 'Out of Stock';
-
   // Add a state for the filter visibility and selected option
   const [isFilterVisible, setIsFilterVisible] = useState<boolean>(false);
 
@@ -382,7 +379,6 @@ const dataWithAvailabilityStatus = data.map(product => ({
             onClick: () => onRowClick(record), // Call the onRowClick function when a row is clicked
           })} 
           />
-          
         )}
         
     </div>
