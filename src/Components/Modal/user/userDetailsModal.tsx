@@ -1,46 +1,44 @@
 import React, { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { Modal, Descriptions, Space, Button, Input, Avatar, Upload, message } from 'antd';
-import './supplierDetailsModal.css'
 import { EditTwoTone } from '@ant-design/icons';
-import { updateSupplier } from '../../../Model/Services/supplierService'; // Import the update supplier mutation
-import { Supplier } from '../../../Model/Interfaces/Suppliers';
 import { useAuth } from '../../../Context/AuthProvider';
 import { toast } from 'react-toastify';
 import supabase from '../../../Utils/supabase';
+import { updateUserProfile } from '../../../Model/Services/userService';
+import { UserProfile } from '../../../Model/Interfaces/UserProfiles';
 
 
-type SupplierDetailsModalProps = {
-  supplier: Supplier;
+type userDetailsModalProps = {
+  currentUser: UserProfile;
   open: boolean;
   onClose: () => void;
 };
 
-export const SupplierDetailsModal: React.FC<SupplierDetailsModalProps> = ({ supplier, open, onClose }) => {
+export const UserDetailsModal: React.FC<userDetailsModalProps> = ({ currentUser, open, onClose }) => {
 
     const queryClient = useQueryClient();
 
     // Use useMutation to update a supplier
-const { mutate: updatesupplier } = useMutation(updateSupplier, {
-  onSuccess: () => {
-    // Invalidate the 'suppliers' query to refetch the data
-    queryClient.invalidateQueries('suppliers');
-    // Close the modal after successful update
-    setIsEditing(!isEditing);
-    onClose();
-  },
-  onError() {
-      toast.error('Error while updating supplier')
-  }
+    const { mutate: Updateuser } = useMutation(updateUserProfile, {
+        onSuccess: () => {
+            // Invalidate the 'suppliers' query to refetch the data
+            queryClient.invalidateQueries('userProfiles');
+            // Close the modal after successful update
+            setIsEditing(!isEditing);
+            onClose();
+        },
+        onError() {
+            toast.error('Error while updating userProfile')
+        }
   })
 
-
     const [isEditing, setIsEditing] = useState(false);
-    const [editedSupplier, setEditedSupplier] = useState({...supplier});
+    const [editedUser, setEditedUser] = useState({...currentUser});
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setEditedSupplier({ ...editedSupplier, [name]: value });
+        setEditedUser({ ...editedUser, [name]: value });
     };
 
     const handleEditClick = () => {
@@ -50,20 +48,21 @@ const { mutate: updatesupplier } = useMutation(updateSupplier, {
 
     const handleSaveClick = () => {
         // Add your logic to save the edited product to database
-        updatesupplier(editedSupplier)
-        console.log(editedSupplier);
+        Updateuser(editedUser)
+        console.log(editedUser);
         setIsEditing(false);
         onClose();
     };
 
     const handleDiscardClick = () => {
         console.log("Edit mode disactivated");
-        setEditedSupplier(supplier);
+        setEditedUser(currentUser);
         setIsEditing(false);
     };
+
     const title = (
         <div className="flex justify-between items-center">
-          <div>Supplier Details</div>
+          <div>User Details</div>
           <Space size="small" className='mr-[2rem]'>
             <Button 
                 className='flex items-center gap-1' 
@@ -75,10 +74,9 @@ const { mutate: updatesupplier } = useMutation(updateSupplier, {
         </div>
       );
     
-
     const [imageUrl, setImageUrl] = useState<string>('');
     const { user } = useAuth();
-    const bucketName = 'supplier-photos';
+    const bucketName = 'user-photos';
     const handleUpload = async (file : any) => {
     console.log({user});
     if(!user){
@@ -109,10 +107,10 @@ const { mutate: updatesupplier } = useMutation(updateSupplier, {
         return;
     }
         console.log('Public URL:', publicUrl);
-        setEditedSupplier({...supplier, photo: publicUrl });
+        setEditedUser({...currentUser, profile_photo: publicUrl });
         setImageUrl(publicUrl);
     }
-  if (!supplier) return null; // If there is no product, don't render anything
+  if (!currentUser) return null; // If there is no product, don't render anything
   return (
     <Modal
       width={"80.6%"}
@@ -141,33 +139,28 @@ const { mutate: updatesupplier } = useMutation(updateSupplier, {
                 </Upload>
                 <Descriptions bordered column={1} title={"Primary Details"}>
                     <Descriptions.Item label="Full Name">
-                        <Input value={editedSupplier.name} name="name" onChange={handleInputChange} />
+                        <Input value={editedUser.name} name="name" onChange={handleInputChange} />
                     </Descriptions.Item>
                     <Descriptions.Item label="Contact Number">
-                        <Input value={editedSupplier.contact_number} name="contact_number" onChange={handleInputChange} />
+                        <Input value={editedUser.phone_number} name="phone_number" onChange={handleInputChange} />
                     </Descriptions.Item>
-                    <Descriptions.Item label="Email">
-                        <Input value={editedSupplier.email} name="email" onChange={handleInputChange} />
+                    <Descriptions.Item label="Role">
+                        <Input value={editedUser.role} name="role" onChange={handleInputChange} />
                     </Descriptions.Item>
-                    <Descriptions.Item label="Adress">
-                        <Input value={editedSupplier.adresse} name="adresse" onChange={handleInputChange} />
-                    </Descriptions.Item>
-                    
+                    <Descriptions.Item label="Email">{currentUser.email}</Descriptions.Item>
             </Descriptions>
         </>
         ) : 
         <>
-
-            <Avatar size={100} src={<img src={supplier.photo} alt="avatar"/>} />
+            <Avatar size={100} src={<img src={currentUser.profile_photo} alt="avatar"/>} />
             <Descriptions bordered column={1} title={"Primary Details"}>
-                <Descriptions.Item label="Full Name">{supplier.name}</Descriptions.Item>
-                <Descriptions.Item label="Contact Number">{supplier.contact_number}</Descriptions.Item>
-                <Descriptions.Item label="Email">{supplier.email}</Descriptions.Item>
-                <Descriptions.Item label="Adress">{supplier.adresse}</Descriptions.Item>
+                <Descriptions.Item label="Full Name">{currentUser.name}</Descriptions.Item>
+                <Descriptions.Item label="Contact Number">{currentUser.phone_number}</Descriptions.Item>
+                <Descriptions.Item label="Role">{currentUser.role}</Descriptions.Item>
+                <Descriptions.Item label="Email">{currentUser.email}</Descriptions.Item>
             </Descriptions>
         </>
         }
-
     </Modal>
   );
 };

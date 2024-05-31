@@ -5,7 +5,7 @@ import type { InputRef } from 'antd';
 import { Moment } from 'moment';
 import './addProductModal.css'
 import { useMutation, useQueryClient } from 'react-query';
-import { createProduct } from '../../../Api/productService'; // Import the createProduct function
+import { createProduct } from '../../../Model/Services/productService'; // Import the createProduct function
 
 let index = 0;
 interface AddProductModalProps {

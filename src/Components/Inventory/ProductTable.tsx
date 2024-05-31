@@ -5,11 +5,11 @@ import { Button,  Input, Modal, Select, Space, Table, Tag } from 'antd';
 import type { FilterDropdownProps } from 'antd/es/table/interface';
 import Highlighter from 'react-highlight-words';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import  {fetchProducts , deleteProduct} from '../../Api/productService';
+import  {fetchProducts , deleteProduct} from '../../Model/Services/productService';
 import { MdOutlineAddTask } from "react-icons/md";
 import { FaDownload, FaFilter } from "react-icons/fa6";
 import AddProductModal from '../Modal/product/addProductModal';
-import { Product } from '../../Interfaces/Products';
+import { Product } from '../../Model/Interfaces/Products';
 import { ProductDetailsModal } from '../Modal/product/productDetailsModal';
 import './ProductTable.css'
 import Papa from 'papaparse';
@@ -25,6 +25,7 @@ const ProductTable = () => {
   const { data, isLoading, isError } = useQuery('products', fetchProducts);
   // Define the data state
   const [localData, setLocalData] = useState<Product[]>([]);
+  
   // Use the useEffect hook to synchronize localData with the data fetched by useQuery
   useEffect(() => {
     if (data) {

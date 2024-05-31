@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { Modal, Descriptions, Space, Button, Input } from 'antd';
-import { Product } from '../../../Interfaces/Products';
+import { Product } from '../../../Model/Interfaces/Products';
 import './productDetailsModal.css'
 import { EditTwoTone } from '@ant-design/icons';
-import { updateProduct } from '../../../Api/productService'; // Import the createProduct function
+import { updateProduct } from '../../../Model/Services/productService'; // Import the createProduct function
 
 
 type ProductDetailsModalProps = {
@@ -110,18 +110,9 @@ const { mutate: updateProd } = useMutation(updateProduct, {
                         {product.availability}
                     </Descriptions.Item>
             </Descriptions>
-            <Descriptions bordered column={1} title={"Supplier Details"}>
-                <Descriptions.Item label="Supplier Name">
-                    Ronald Martin
-                </Descriptions.Item>
-                <Descriptions.Item label="Contact Number">
-                    +216 22 279 263
-                </Descriptions.Item>
-            </Descriptions>
             
         </>
         ) : 
-        
         <>
             <Descriptions bordered column={1} title={"Primary Details"}>
                 <Descriptions.Item label="Name">{product.name}</Descriptions.Item>
@@ -133,10 +124,6 @@ const { mutate: updateProd } = useMutation(updateProduct, {
                 <Descriptions.Item label="Availability">{product.availability}</Descriptions.Item>
             </Descriptions>
 
-            <Descriptions bordered column={1} title={"Supplier Details"}>
-                <Descriptions.Item label="Supplier Name">Ronald Martin</Descriptions.Item>
-                <Descriptions.Item label="Contact Number">+216 22 279 263</Descriptions.Item>
-            </Descriptions>
         </>
         }
 

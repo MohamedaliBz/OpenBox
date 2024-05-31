@@ -1,27 +1,26 @@
-import { deleteSupplier, fetchSuppliers } from "../../Model/Services/supplierService";
 import { useEffect, useRef, useState } from "react";
-import { Supplier } from "../../Model/Interfaces/Suppliers";
 import {DeleteTwoTone, ExclamationCircleFilled, SearchOutlined } from '@ant-design/icons';
 import type { InputRef, TableColumnsType, TableColumnType } from 'antd';
 import { Avatar, Button,  Input, Modal, Space, Table, Tag } from 'antd';
 import type { FilterDropdownProps } from 'antd/es/table/interface';
 import Highlighter from 'react-highlight-words';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { MdOutlineAddTask } from "react-icons/md";
 import { FaDownload, FaFilter } from "react-icons/fa6";
 import Papa from 'papaparse';
 import { saveAs } from 'file-saver';
 import { toast } from 'react-toastify';
-import AddSupplierModal from "../Modal/supplier/addSupplierModal";
-import { SupplierDetailsModal } from "../Modal/supplier/supplierDetailsModal";
+import { IoPersonAddSharp } from "react-icons/io5";
+import { ClientOrder } from "../../../Model/Interfaces/ClientOrder";
+import { deleteClientOrder, fetchClientOrders } from "../../../Model/Services/ClientOrder";
 
-type DataIndex = keyof Supplier;
 
-const SupplierTable = ()=>{
+type DataIndex = keyof ClientOrder;
+
+const ClientOrderTable = ()=>{
     const queryClient = useQueryClient();
-    const { data, isLoading, isError } = useQuery('suppliers',fetchSuppliers)
+    const { data, isLoading, isError } = useQuery('clientOrders',fetchClientOrders)
     // Define the data state
-    const [localData, setLocalData] = useState<Supplier[]>([]);
+    const [localData, setLocalData] = useState<ClientOrder[]>([]);
     // Using useEffect hook to synchronize localData with the data fetched by useQuery
     useEffect(() => {
         if (data) {
@@ -48,7 +47,7 @@ const SupplierTable = ()=>{
     setSearchText('');
     };
     
-    const getColumnSearchProps = (dataIndex: DataIndex): TableColumnType<Supplier> => ({
+    const getColumnSearchProps = (dataIndex: DataIndex): TableColumnType<ClientOrder> => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
         <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
         <Input
@@ -124,80 +123,74 @@ const SupplierTable = ()=>{
         text
         ),
     });
-     // using the mutate hook to delete a supplier 
-      const { mutate: deleteMutation } = useMutation(deleteSupplier, {
+
+     // using the mutate hook to delete a user profile 
+    const { mutate: deleteclientOrder } = useMutation(deleteClientOrder, {
         onSuccess: () => {
-          // Invalidate and refetch : This ensures that the list of products is refetched from the server after a product is deleted
-          queryClient.invalidateQueries('suppliers'); 
+          // Invalidate and refetch : This ensures that the list of users is refetched from the server after a user is deleted
+          queryClient.invalidateQueries('clientOrders'); 
         },
         onError: (error) => {
-          console.error('Error deleting supplier:', error);
+          console.error('Error deleting client order:', error);
         },
       });
 
      // modal to confirm the delete action
     const { confirm } = Modal;
-    const showDeleteConfirm = (record : Supplier) => {
+    const showDeleteConfirm = (record : ClientOrder) => {
         confirm({
-        title: 'Are you sure to delete this Supplier ?',
+        title: 'Are you sure to delete this client ?',
         icon: <ExclamationCircleFilled />,
-        content: 'For security purposes, please confirm your intent to delete this supplier. This operation cannot be undone.',
+        content: 'For security purposes, please confirm your intent to delete this client. This operation cannot be undone.',
         okText: 'Delete',
         okType: 'danger',
         cancelText: 'Discard',
         className :"",
         onOk() {
             console.log('Delete:', record);
-            deleteMutation(record.id);
+            deleteclientOrder(record.id);
         }
         });
     };
 
-    const columns: TableColumnsType<Supplier> = [
+    const columns: TableColumnsType<ClientOrder> = [
         {
-           title: '',
-           dataIndex: 'photo',
-           key: 'photo',
-           render: (_, record) => (
-            <Avatar src={record.photo} alt={record.name} />
-        )
+           title: 'Client Order Id',
+           dataIndex: 'id',
+           key: 'id',
+           ...getColumnSearchProps('id'),
+          sorter: (a, b) => a.id - b.id,
+          sortDirections: ['descend', 'ascend'],
+          render : (id)=> (
+            <Tag color={'cyan'}>{id}</Tag>
+          )
         },
         {
-          title: 'Full Name',
-          dataIndex: 'name',
-          key: 'name',
-          ...getColumnSearchProps('name'),
-          sorter: (a, b) => a.name.length - b.name.length,
+          title: 'Order Name',
+          dataIndex: 'nom_commande',
+          key: 'nom_commande',
+          ...getColumnSearchProps('nom_commande'),
+          sorter: (a, b) => a.nom_commande.length - b.nom_commande.length,
           sortDirections: ['descend', 'ascend'],
         },
         {
-          title: 'Phone Number',
-          dataIndex: 'contact_number',
-          key: 'contact_number',
-          ...getColumnSearchProps('contact_number'),
-          sorter : (a,b)=> a.contact_number - b.contact_number,
-          sortDirections: ['descend', 'ascend'],
+          title: 'Order Date',
+          dataIndex: 'date_commande',
+          key: 'date_commande',
+          ...getColumnSearchProps('date_commande'),
+          sorter : (a,b) => new Date(a.date_commande).getTime() - new Date(b.date_commande).getTime()
         },
         {
-          title: 'Email',
-          dataIndex: 'email',
-          key: 'email',
-          ...getColumnSearchProps('email'),
-          sorter : (a,b) => a.email.length - b.email.length,
-          sortDirections: ['descend', 'ascend'],
-    
-        },
-        {
-          title: 'Adress',
-          dataIndex: 'adresse',
-          key: 'adresse',
-          ...getColumnSearchProps('adresse'),
-          sorter : (a,b) => a.adresse.length - b.adresse.length,
-          sortDirections: ['descend', 'ascend'],
-          render: (adresse) => (
-            <Tag color={'purple'}>{adresse}</Tag>
-          ),
-        },
+            title: 'Client Id',
+            dataIndex: 'client_id',
+            key: 'client_id',
+            ...getColumnSearchProps('client_id'),
+            sorter : (a,b) => a.client_id - b.client_id,
+            sortDirections: ['descend', 'ascend'],
+            render : (client_id)=>(
+                <Tag color="purple">{client_id}</Tag>
+            )
+            },
         {
           title: 'Actions',
           key: 'actions',
@@ -224,11 +217,11 @@ const SupplierTable = ()=>{
         setIsDetailsModalOpen(false);
     };
 
-    //Creating a state for the selected supplier
-    const [selectedSupplier, setSelectedSupplier] = useState<Supplier>();  
+    //Creating a state for the selected client order
+    const [selectedClientOrder, setselectedClientOrder] = useState<ClientOrder>();  
     //Creating a function to handle row click
-    const onRowClick = (record: Supplier) => {
-        setSelectedSupplier(record); // Update the state with the clicked product
+    const onRowClick = (record: ClientOrder) => {
+        setselectedClientOrder(record); // Update the state with the clicked client order
         setIsDetailsModalOpen(true); // Open the modal
     };
 
@@ -245,19 +238,19 @@ const SupplierTable = ()=>{
         // Create a Blob with the CSV data
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
         // Save the file
-        saveAs(blob, 'suppliers.csv');
+        saveAs(blob, 'clientOrders.csv');
     }
 
 return(
     <div className='ml-[20rem] w-[80%] mt-[-47rem]'>
       <div className='flex justify-between p-4 bg-white rounded-lg h-[5rem] items-center '>
-        <h1 className='text-xl font-medium leading-[30px]'>Suppliers</h1>
+        <h1 className='text-xl font-medium leading-[30px]'>Client Orders</h1>
         <div className='flex gap-4 mr-4'>
           <Button type='primary' className='flex gap-2 items-center text-[1rem] py-[1.1rem]' onClick={handleOpenModal}>
-            <MdOutlineAddTask style={{fontSize: "1rem",}}/>
-              Add Supplier
+            <IoPersonAddSharp style={{fontSize: "1rem",}}/>
+              Add Order
           </Button>
-          <AddSupplierModal open={isModalOpen} onClose={handleCloseModal} />
+          {/* <AddClientModal open={isModalOpen} onClose={handleCloseModal} /> */}
           <Button type='default' className='flex gap-2 items-center text-[1rem] py-[1.1rem]' onClick={handleDownload}>
             <FaDownload style={{fontSize: "1rem",}} />
               Download all
@@ -269,13 +262,13 @@ return(
 
         </div>
       </div>
-     
-      { selectedSupplier && (<SupplierDetailsModal supplier={selectedSupplier} open={isDetailsModalOpen} onClose={handleCloseDetailsModal} />)}
+
+      {/* { selectedClient && (<ClientDetailsModal currentClient={selectedClient} open={isDetailsModalOpen} onClose={handleCloseDetailsModal} />)} */}
       
       {isLoading ? (
         <div>Loading...</div>
       ) : isError ? (
-        <div>Error fetching products</div>
+        <div>Error fetching Client Orders</div>
       ) : (
         <Table 
           columns={columns} 
@@ -288,4 +281,4 @@ return(
         
     </div>
 )}
-export default SupplierTable
+export default ClientOrderTable

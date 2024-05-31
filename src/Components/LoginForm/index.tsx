@@ -3,11 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import google from '../../Assets/images/google.png';
 import './index.css';
-import supabase from '../../Utils/supabase';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-import { Input, message } from 'antd';
-import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import { useLoginMutation } from '../../Model/Services/auth';
 
 interface MyFormProps {
     children?: ReactNode; 
@@ -24,38 +20,10 @@ export const  MyForm: React.FC<MyFormProps> =  ({ children, nameButton }: MyForm
         email: '',
         password: ''
     };
-    
-    const navigate = useNavigate();
+    const { mutate, isLoading} = useLoginMutation();
     const handleSubmit = async (values: MyFormValues) => {
         const { email,password } = values;
-        try {
-            const { data,error } = await supabase.auth.signInWithPassword({
-                email,
-                password,
-            });
-
-            if (error) {
-                toast.error(`Sign in failed. ${error?.message}.`,
-            {
-                autoClose:3000 , 
-                position:'top-center' ,
-                // onClose: () => {window.location.reload();}         
-            });
-                throw error;
-            }
-                console.log('User signed in:', data.user);  
-                message.success('Sign in successful !',);
-                // Sets the session data from the current session. If the current session is expired, 
-                // setSession will take care of refreshing it to obtain a new session.
-                const settedSession = await supabase.auth.setSession({
-                    access_token : data?.session.access_token,
-                    refresh_token: data?.session.refresh_token,
-                })
-                console.log(" Setted Session :" ,settedSession);
-                navigate('/inventory')
-        } catch (error) { 
-            console.log({error}); 
-        }
+        mutate(values);
     };
     
     return (

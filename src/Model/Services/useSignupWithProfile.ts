@@ -1,27 +1,22 @@
 import { useMutation} from 'react-query';
-import supabase from '../Utils/supabase';
+import supabase from '../../Utils/supabase';
 import { toast } from 'react-toastify';
+import { SignupData } from '../Interfaces/Authentication';
 
-
-interface SignupData {
-    name: string;
-    email: string;
-    password: string;
-    phone_number: number;
-    status: string;
-    role: string;
-    profile_photo : string
-  }
 
 const useSignupWithProfile = () => {
 
-    return useMutation(async ({ name, email, password, phone_number, status, role,profile_photo } : SignupData) => {
+    return useMutation(async ({ name, email, password, phone_number, role,profile_photo } : SignupData) => {
         // Step 1: Sign up user with Supabase Auth
-        const { data , error: authError } = await supabase.auth.signUp({
+        const { data : {user} , error: authError } = await supabase.auth.signUp({
             email,
-            password
+            password,
+            options: {
+                data: {
+                    first_name: name
+                }
+            }
         });
-
         if (authError) {
             toast.error(`error while creating user ${authError.message}` , 
                 {   autoClose:1500, 
@@ -29,14 +24,14 @@ const useSignupWithProfile = () => {
                 });
             throw new Error(authError.message);
         }
-
+        console.log({user});
+        
         // Step 2: Insert additional details into user_profiles
-        const {error: profileError } = await supabase.from('user_profiles').insert([{
-            user_id: data.user?.id,
+        const {error: profileError } = await supabase.from('userProfiles').insert([{
+            user_id: user?.id,
             email:email,
             name: name,
             phone_number: phone_number,
-            status: status,
             role: role,
             profile_photo: profile_photo
         }]);
@@ -49,14 +44,18 @@ const useSignupWithProfile = () => {
             throw new Error(profileError.message);
         }
 
-        return data.user; // return the user object if needed
+        return user; // return the user object if needed
     }, 
     {
         onSuccess: () => {
             // Optional: Handle any actions on success, like navigation or showing a success message
-            toast.success('User created successfully with extended informations!');
+            toast.success('User created successfully with extended informations!',
+            {   autoClose:1500, 
+                position:'top-center',
+            }
+            );
+
         }
     });
 };
-
 export default useSignupWithProfile;

@@ -10,7 +10,7 @@ export default function Title({title,subTitle }:{
 ){
     return(
         <div className='headForm'>
-            <img src={minBox} className='minBox'/>
+            <img src={minBox} className='minBox' alt='title'/>
             <h2 className='title'>{title}</h2>
             <p className='p' >{subTitle}</p>
         </div>

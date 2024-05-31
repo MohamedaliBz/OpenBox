@@ -21,7 +21,7 @@ root.render(
   <React.StrictMode>
     {/* This sets up React Query in our application by creating a QueryClient instance and wrapping the App component with QueryClientProvider */}
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
+      <AuthProvider >
         <App />
       </AuthProvider>
     </QueryClientProvider>

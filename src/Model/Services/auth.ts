@@ -1,14 +1,12 @@
 import { useMutation } from 'react-query';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import supabase from '../Utils/supabase';
+import supabase from '../../Utils/supabase';
+import { message } from 'antd';
+import { FormValues, MyFormValues } from '../Interfaces/Authentication';
 
-interface FormValues {
-    name : string;
-    email: string;
-    password: string;
-}
-const useSignupMutation = () => {
+
+export const useSignupMutation = () => {
     const navigate = useNavigate();
     return useMutation(async ({ name, email, password } : FormValues) => {
         const { data, error } = await supabase.auth.signUp({
@@ -45,4 +43,36 @@ const useSignupMutation = () => {
     });
 }
 
-export default useSignupMutation;
+
+export const useLoginMutation =() => {
+    const navigate = useNavigate();
+    return useMutation(async ({email,password}:MyFormValues)=>{
+        try {
+            const { data,error } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            });
+    
+            if (error) {
+                toast.error(`Sign in failed. ${error?.message}.`,
+            {
+                autoClose:3000 , 
+                position:'top-center' ,
+                // onClose: () => {window.location.reload();}         
+            });
+                throw error;
+            }
+                console.log('User signed in:', data.user); 
+                console.log('User signed in:', data); 
+                message.success('Sign in successful !',);
+                navigate("/inventory")
+        } catch (error) { 
+            console.log({error}); 
+        }
+    })
+};
+
+export const signOut = async () => {
+  const { error } = await supabase.auth.signOut();
+  return { error };
+};

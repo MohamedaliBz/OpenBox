@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify';
-import  supabase  from '../Utils/supabase'; // Import Supabase client
+import  supabase  from '../../Utils/supabase'; // Import Supabase client
 import { Product, ProductToAdd } from '../Interfaces/Products';
+
 
 
 // Function to fetch products from Supabase

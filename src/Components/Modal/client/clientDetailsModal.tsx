@@ -1,46 +1,44 @@
 import React, { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { Modal, Descriptions, Space, Button, Input, Avatar, Upload, message } from 'antd';
-import './supplierDetailsModal.css'
 import { EditTwoTone } from '@ant-design/icons';
-import { updateSupplier } from '../../../Model/Services/supplierService'; // Import the update supplier mutation
-import { Supplier } from '../../../Model/Interfaces/Suppliers';
 import { useAuth } from '../../../Context/AuthProvider';
 import { toast } from 'react-toastify';
 import supabase from '../../../Utils/supabase';
+import { Client } from '../../../Model/Interfaces/Client';
+import { updateClient } from '../../../Model/Services/clientService';
 
 
-type SupplierDetailsModalProps = {
-  supplier: Supplier;
+type userDetailsModalProps = {
+  currentClient: Client;
   open: boolean;
   onClose: () => void;
 };
 
-export const SupplierDetailsModal: React.FC<SupplierDetailsModalProps> = ({ supplier, open, onClose }) => {
+export const ClientDetailsModal: React.FC<userDetailsModalProps> = ({ currentClient, open, onClose }) => {
 
     const queryClient = useQueryClient();
 
     // Use useMutation to update a supplier
-const { mutate: updatesupplier } = useMutation(updateSupplier, {
-  onSuccess: () => {
-    // Invalidate the 'suppliers' query to refetch the data
-    queryClient.invalidateQueries('suppliers');
-    // Close the modal after successful update
-    setIsEditing(!isEditing);
-    onClose();
-  },
-  onError() {
-      toast.error('Error while updating supplier')
-  }
+    const { mutate: Updateclient } = useMutation(updateClient, {
+        onSuccess: () => {
+            // Invalidate the 'suppliers' query to refetch the data
+            queryClient.invalidateQueries('clients');
+            // Close the modal after successful update
+            setIsEditing(!isEditing);
+            onClose();
+        },
+        onError() {
+            toast.error('Error while updating client')
+        }
   })
 
-
     const [isEditing, setIsEditing] = useState(false);
-    const [editedSupplier, setEditedSupplier] = useState({...supplier});
+    const [editedClient, setEditedClient] = useState({...currentClient});
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setEditedSupplier({ ...editedSupplier, [name]: value });
+        setEditedClient({ ...editedClient, [name]: value });
     };
 
     const handleEditClick = () => {
@@ -50,20 +48,21 @@ const { mutate: updatesupplier } = useMutation(updateSupplier, {
 
     const handleSaveClick = () => {
         // Add your logic to save the edited product to database
-        updatesupplier(editedSupplier)
-        console.log(editedSupplier);
+        Updateclient(editedClient)
+        console.log(editedClient);
         setIsEditing(false);
         onClose();
     };
 
     const handleDiscardClick = () => {
         console.log("Edit mode disactivated");
-        setEditedSupplier(supplier);
+        setEditedClient(currentClient);
         setIsEditing(false);
     };
+
     const title = (
         <div className="flex justify-between items-center">
-          <div>Supplier Details</div>
+          <div>Client Details</div>
           <Space size="small" className='mr-[2rem]'>
             <Button 
                 className='flex items-center gap-1' 
@@ -75,10 +74,9 @@ const { mutate: updatesupplier } = useMutation(updateSupplier, {
         </div>
       );
     
-
     const [imageUrl, setImageUrl] = useState<string>('');
     const { user } = useAuth();
-    const bucketName = 'supplier-photos';
+    const bucketName = 'client-photos';
     const handleUpload = async (file : any) => {
     console.log({user});
     if(!user){
@@ -94,11 +92,9 @@ const { mutate: updatesupplier } = useMutation(updateSupplier, {
         }
         );
         console.error('Error uploading file:', error);
-        return;
+        return ;
     }
-    message.success('File uploaded successfully');
-    console.log('File uploaded successfully:', data);
-
+    message.success('File uploaded successfully');    
     // Get the public URL
     const {data: { publicUrl } } = supabase.storage.from(bucketName).getPublicUrl(filePath);
     if (!publicUrl) {
@@ -109,10 +105,10 @@ const { mutate: updatesupplier } = useMutation(updateSupplier, {
         return;
     }
         console.log('Public URL:', publicUrl);
-        setEditedSupplier({...supplier, photo: publicUrl });
+        setEditedClient({...currentClient, client_photo: publicUrl });
         setImageUrl(publicUrl);
     }
-  if (!supplier) return null; // If there is no product, don't render anything
+  if (!currentClient) return null; // If there is no client, don't render anything
   return (
     <Modal
       width={"80.6%"}
@@ -137,37 +133,35 @@ const { mutate: updatesupplier } = useMutation(updateSupplier, {
                     showUploadList={false}
                     customRequest={({ file }) => handleUpload(file)}
                 >
-                    {imageUrl ?<Avatar size={100} src={<img src={imageUrl} alt="avatar"/>} />: <p>Upload new supplier photo</p>}
+                    {imageUrl ?<Avatar size={100} src={<img src={imageUrl} alt="avatar"/>} />: <p>Upload new <b>Client</b> photo</p>}
                 </Upload>
                 <Descriptions bordered column={1} title={"Primary Details"}>
                     <Descriptions.Item label="Full Name">
-                        <Input value={editedSupplier.name} name="name" onChange={handleInputChange} />
+                        <Input value={editedClient.name} name="name" onChange={handleInputChange} />
                     </Descriptions.Item>
                     <Descriptions.Item label="Contact Number">
-                        <Input value={editedSupplier.contact_number} name="contact_number" onChange={handleInputChange} />
+                        <Input value={editedClient.phone_number} name="phone_number" onChange={handleInputChange} />
                     </Descriptions.Item>
                     <Descriptions.Item label="Email">
-                        <Input value={editedSupplier.email} name="email" onChange={handleInputChange} />
+                        <Input value={editedClient.email} name="Email" onChange={handleInputChange} />
                     </Descriptions.Item>
                     <Descriptions.Item label="Adress">
-                        <Input value={editedSupplier.adresse} name="adresse" onChange={handleInputChange} />
+                        <Input value={editedClient.adresse} name="Adress" onChange={handleInputChange} />
                     </Descriptions.Item>
-                    
             </Descriptions>
         </>
         ) : 
         <>
-
-            <Avatar size={100} src={<img src={supplier.photo} alt="avatar"/>} />
+            <Avatar size={100} src={<img src={currentClient.client_photo} alt="avatar"/>} />
             <Descriptions bordered column={1} title={"Primary Details"}>
-                <Descriptions.Item label="Full Name">{supplier.name}</Descriptions.Item>
-                <Descriptions.Item label="Contact Number">{supplier.contact_number}</Descriptions.Item>
-                <Descriptions.Item label="Email">{supplier.email}</Descriptions.Item>
-                <Descriptions.Item label="Adress">{supplier.adresse}</Descriptions.Item>
+                <Descriptions.Item label="Client ID">{currentClient.id}</Descriptions.Item>
+                <Descriptions.Item label="Full Name">{currentClient.name}</Descriptions.Item>
+                <Descriptions.Item label="Contact Number">{currentClient.phone_number}</Descriptions.Item>
+                <Descriptions.Item label="Email">{currentClient.email}</Descriptions.Item>
+                <Descriptions.Item label="Adress">{currentClient.adresse}</Descriptions.Item>
             </Descriptions>
         </>
         }
-
     </Modal>
   );
 };

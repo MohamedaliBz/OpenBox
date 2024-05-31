@@ -1,7 +1,7 @@
 import React, { useState} from 'react';
 import { Modal ,Input , Button, Upload ,message, Avatar} from 'antd';
 import { useMutation, useQueryClient } from 'react-query';
-import { createSupplier } from '../../../Api/supplierService'; // Import the createSupplier function
+import { createSupplier } from '../../../Model/Services/supplierService'; // Import the createSupplier function
 import supabase from '../../../Utils/supabase';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../../Context/AuthProvider';

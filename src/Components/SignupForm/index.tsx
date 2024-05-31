@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import google from '../../Assets/images/google.png';
 import './index.css';
-import useSignupMutation from '../../Hooks/useSignupMutation';
+import {useSignupMutation} from '../../Model/Services/auth';
 
 interface MyFormProps {
     children?: ReactNode; 
@@ -18,7 +18,7 @@ interface MyFormValues {
 
 export const  SignupForm: React.FC<MyFormProps> =  ({ children, nameButton }: MyFormProps) => {
     
-    const { mutate, isLoading } = useSignupMutation();
+    const { mutate, isLoading} = useSignupMutation();
 
     // creating initialValues object to use it in formik
     const initialValues: MyFormValues = {

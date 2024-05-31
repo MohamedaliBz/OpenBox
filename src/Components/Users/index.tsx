@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { UserProfile } from "../../Interfaces/UserProfiles";
+import { UserProfile } from "../../Model/Interfaces/UserProfiles";
 import {DeleteTwoTone, ExclamationCircleFilled, SearchOutlined } from '@ant-design/icons';
 import type { InputRef, TableColumnsType, TableColumnType } from 'antd';
-import { Avatar, Button,  Input, Modal, Space, Table } from 'antd';
+import { Avatar, Button,  Input, Modal, Space, Table, Tag } from 'antd';
 import type { FilterDropdownProps } from 'antd/es/table/interface';
 import Highlighter from 'react-highlight-words';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
@@ -10,15 +10,15 @@ import { FaDownload, FaFilter } from "react-icons/fa6";
 import Papa from 'papaparse';
 import { saveAs } from 'file-saver';
 import { toast } from 'react-toastify';
-import AddSupplierModal from "../Modal/supplier/addSupplierModal";
-import { deleteUserProfile, fetchUserProfiles } from "../../Api/userService";
+import { deleteUserProfile, fetchUserProfiles } from "../../Model/Services/userService";
 import { IoPersonAddSharp } from "react-icons/io5";
 import AddUserModal from "../Modal/user/addUserModal";
+import { UserDetailsModal } from "../Modal/user/userDetailsModal";
 
 
 type DataIndex = keyof UserProfile;
 
-const ClientTable = ()=>{
+const UserTable = ()=>{
     const queryClient = useQueryClient();
     const { data, isLoading, isError } = useQuery('users',fetchUserProfiles)
     // Define the data state
@@ -196,6 +196,23 @@ const ClientTable = ()=>{
             ...getColumnSearchProps('role'),
             sorter : (a,b) => a.email.length - b.email.length,
             sortDirections: ['descend', 'ascend'],
+            render: (role) => {
+              let color;
+              switch (role) {
+                case 'Admin':
+                  color = 'green';
+                  break;
+                case 'Warehouse Manager':
+                  color = 'geekblue';
+                  break;
+                case 'Stock Manager':
+                  color = 'volcano';
+                  break;
+                default:
+                  color = 'default';
+              }
+              return <Tag color={color}>{role}</Tag>;
+            },
         },
         {
           title: 'Actions',
@@ -244,13 +261,13 @@ const ClientTable = ()=>{
         // Create a Blob with the CSV data
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
         // Save the file
-        saveAs(blob, 'suppliers.csv');
+        saveAs(blob, 'users.csv');
     }
 
 return(
     <div className='ml-[20rem] w-[80%] mt-[-47rem]'>
       <div className='flex justify-between p-4 bg-white rounded-lg h-[5rem] items-center '>
-        <h1 className='text-xl font-medium leading-[30px]'>Suppliers</h1>
+        <h1 className='text-xl font-medium leading-[30px]'>Users</h1>
         <div className='flex gap-4 mr-4'>
           <Button type='primary' className='flex gap-2 items-center text-[1rem] py-[1.1rem]' onClick={handleOpenModal}>
             <IoPersonAddSharp style={{fontSize: "1rem",}}/>
@@ -268,13 +285,13 @@ return(
 
         </div>
       </div>
-     
-      {/* { selectedUser && (<UserDetailsModal supplier={selectedUser} open={isDetailsModalOpen} onClose={handleCloseDetailsModal} />)} */}
+
+      { selectedUser && (<UserDetailsModal currentUser={selectedUser} open={isDetailsModalOpen} onClose={handleCloseDetailsModal} />)}
       
       {isLoading ? (
         <div>Loading...</div>
       ) : isError ? (
-        <div>Error fetching products</div>
+        <div>Error fetching users</div>
       ) : (
         <Table 
           columns={columns} 
@@ -287,4 +304,4 @@ return(
         
     </div>
 )}
-export default ClientTable
+export default UserTable

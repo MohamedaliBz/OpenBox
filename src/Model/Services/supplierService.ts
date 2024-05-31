@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify';
-import  supabase  from '../Utils/supabase'; // Import Supabase client
+import  supabase  from '../../Utils/supabase'; // Import Supabase client
 import { Supplier, SupplierToAdd } from '../Interfaces/Suppliers';
 
 
