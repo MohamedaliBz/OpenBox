@@ -2,6 +2,7 @@ export interface Product {
     id : Number ;
     name: string;
     buying_price: number;
+    selling_price: number;
     quantity: number;
     threshold_value: number;
     category: string;
@@ -13,6 +14,7 @@ export interface ProductToAdd{
   name: string;
   category: string;
   buying_price: number;
+  selling_price: number;
   quantity: number;
   unit: string,
   expiry_date: string;

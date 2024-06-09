@@ -1,17 +1,19 @@
 import { useEffect, useRef, useState } from "react";
-import {DeleteTwoTone, ExclamationCircleFilled, SearchOutlined } from '@ant-design/icons';
+import {DeleteTwoTone, ExclamationCircleFilled, EyeTwoTone, SearchOutlined } from '@ant-design/icons';
 import type { InputRef, TableColumnsType, TableColumnType } from 'antd';
-import { Avatar, Button,  Input, Modal, Space, Table, Tag } from 'antd';
+import { Button,  Input, Modal, Space, Table, Tag } from 'antd';
 import type { FilterDropdownProps } from 'antd/es/table/interface';
 import Highlighter from 'react-highlight-words';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { FaDownload, FaFilter } from "react-icons/fa6";
+import { FaBoxOpen, FaDownload, FaFilter } from "react-icons/fa6";
 import Papa from 'papaparse';
 import { saveAs } from 'file-saver';
 import { toast } from 'react-toastify';
-import { IoPersonAddSharp } from "react-icons/io5";
 import { ClientOrder } from "../../../Model/Interfaces/ClientOrder";
 import { deleteClientOrder, fetchClientOrders } from "../../../Model/Services/ClientOrder";
+import AddClientOrderModal from "../../Modal/ClientOrder/addClientOrderModal";
+import {ClientOrderDetails} from "../../Modal/ClientOrder/clientOrderDetailsModal";
+import ClientOrderLineModal from "../../Modal/ClientOrderLine/ClientOrderLineModal";
 
 
 type DataIndex = keyof ClientOrder;
@@ -162,7 +164,7 @@ const ClientOrderTable = ()=>{
           sorter: (a, b) => a.id - b.id,
           sortDirections: ['descend', 'ascend'],
           render : (id)=> (
-            <Tag color={'cyan'}>{id}</Tag>
+            <Tag color="cyan">{id}</Tag>
           )
         },
         {
@@ -181,6 +183,12 @@ const ClientOrderTable = ()=>{
           sorter : (a,b) => new Date(a.date_commande).getTime() - new Date(b.date_commande).getTime()
         },
         {
+          title: 'Order Status',
+          dataIndex: 'etat_commande',
+          key: 'etat_commande',
+          ...getColumnSearchProps('etat_commande'),
+        },
+        {
             title: 'Client Id',
             dataIndex: 'client_id',
             key: 'client_id',
@@ -196,13 +204,14 @@ const ClientOrderTable = ()=>{
           key: 'actions',
           render: (_ ,record) => (
             <Space size="small">
+              <Button className='flex items-center gap-1' onClick={(event) => {onDeatilsClick(record) ;event.stopPropagation()}}><EyeTwoTone />Details</Button>
               <Button danger className='flex items-center gap-1' onClick={(event) => {showDeleteConfirm(record); event.stopPropagation()}}><DeleteTwoTone twoToneColor="red"/>Delete</Button>
             </Space>
             ),
       },
       ];
     
-    // useState to control the model's state
+    // useState to control the AddClientOrder model's state
     const [isModalOpen, setIsModalOpen] = useState(false);
     const handleOpenModal = () => {
         setIsModalOpen(true);
@@ -211,7 +220,7 @@ const ClientOrderTable = ()=>{
         setIsModalOpen(false);
     };
 
-    // useState to control the detailsmodel's state
+    // useState to control the detailsClientOrder model's state
     const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
     const handleCloseDetailsModal = () => {
         setIsDetailsModalOpen(false);
@@ -219,14 +228,24 @@ const ClientOrderTable = ()=>{
 
     //Creating a state for the selected client order
     const [selectedClientOrder, setselectedClientOrder] = useState<ClientOrder>();  
-    //Creating a function to handle row click
-    const onRowClick = (record: ClientOrder) => {
+
+    //Creating a function to handle details button click
+    const onDeatilsClick = (record: ClientOrder) => {
         setselectedClientOrder(record); // Update the state with the clicked client order
         setIsDetailsModalOpen(true); // Open the modal
     };
 
+  const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
+
+  const [isModaloppen, setisModaloppen] = useState(false);
+
+const onRowClick = (record: ClientOrder) => {
+  setSelectedOrderId(record.id);
+  setisModaloppen(true);
+};
+
     const handleDownload = ()=>{
-        if (!data) {
+        if (!data || data.length ===0 ) {
             toast.error("No data to download" , 
             {   autoClose:500 , 
                 position:'top-center',
@@ -239,7 +258,7 @@ const ClientOrderTable = ()=>{
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
         // Save the file
         saveAs(blob, 'clientOrders.csv');
-    }
+  }
 
 return(
     <div className='ml-[20rem] w-[80%] mt-[-47rem]'>
@@ -247,24 +266,20 @@ return(
         <h1 className='text-xl font-medium leading-[30px]'>Client Orders</h1>
         <div className='flex gap-4 mr-4'>
           <Button type='primary' className='flex gap-2 items-center text-[1rem] py-[1.1rem]' onClick={handleOpenModal}>
-            <IoPersonAddSharp style={{fontSize: "1rem",}}/>
+            <FaBoxOpen style={{fontSize: "1rem",}}/>
               Add Order
           </Button>
-          {/* <AddClientModal open={isModalOpen} onClose={handleCloseModal} /> */}
+          <AddClientOrderModal open={isModalOpen} onClose={handleCloseModal} />
           <Button type='default' className='flex gap-2 items-center text-[1rem] py-[1.1rem]' onClick={handleDownload}>
             <FaDownload style={{fontSize: "1rem",}} />
               Download all
           </Button>
-          <Button type='default' className='flex gap-2 items-center text-[1rem] py-[1.1rem]' onClick={() => null}>
-            <FaFilter style={{fontSize: "1rem",}} />
-              Filter
-          </Button>
-
+          
         </div>
       </div>
 
-      {/* { selectedClient && (<ClientDetailsModal currentClient={selectedClient} open={isDetailsModalOpen} onClose={handleCloseDetailsModal} />)} */}
-      
+      { selectedClientOrder && (<ClientOrderDetails ClientOrder={selectedClientOrder} open={isDetailsModalOpen} onClose={handleCloseDetailsModal} />)}
+
       {isLoading ? (
         <div>Loading...</div>
       ) : isError ? (
@@ -278,6 +293,10 @@ return(
           })} 
           />
         )}
+        
+        {isModaloppen && selectedOrderId && (
+                <ClientOrderLineModal orderId={selectedOrderId} open={isModaloppen} onClose={() => setisModaloppen(false)} />
+            )}
         
     </div>
 )}

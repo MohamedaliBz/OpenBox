@@ -6,7 +6,7 @@ import { Product, ProductToAdd } from '../Interfaces/Products';
 
 // Function to fetch products from Supabase
 export const fetchProducts = async () => {
-  const { data , error } = await supabase.from('Products').select('id,name, buying_price, quantity, threshold_value, category, expiry_date, availability');
+  const { data , error } = await supabase.from('Products').select('id,name, buying_price, selling_price, quantity, threshold_value, category, expiry_date, availability');
   if (error) {
     toast.error(`Error while fetching data:', ${error.message}`,
     {   autoClose:2000 , 

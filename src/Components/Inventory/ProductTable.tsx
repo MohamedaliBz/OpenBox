@@ -175,6 +175,14 @@ const ProductTable = () => {
       sortDirections: ['descend', 'ascend'],
     },
     {
+      title: 'Selling Price',
+      dataIndex: 'selling_price',
+      key: 'selling_price',
+      ...getColumnSearchProps('selling_price'),
+      sorter : (a,b)=> a.buying_price - b.buying_price,
+      sortDirections: ['descend', 'ascend'],
+    },
+    {
       title: 'Quantity',
       dataIndex: 'quantity',
       key: 'quantity',

@@ -44,7 +44,7 @@ export const useSignupMutation = () => {
 }
 
 
-export const useLoginMutation =() => {
+export const LoginMutation =() => {
     const navigate = useNavigate();
     return useMutation(async ({email,password}:MyFormValues)=>{
         try {

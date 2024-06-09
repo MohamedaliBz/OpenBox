@@ -1,7 +1,7 @@
 
 type Props = {
     icon: string ,
-    name : string
+    name : string ,
 }
 
 export const Element = (props: Props) => {

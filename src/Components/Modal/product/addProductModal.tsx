@@ -35,7 +35,6 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ open, onClose }) => {
   /**********************************/
 
   const [confirmLoading, setConfirmLoading] = useState(false);
-
   const queryClient = useQueryClient();
   // Use useMutation to create a new product
   const { mutate: addProduct } = useMutation(createProduct, {
@@ -63,6 +62,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ open, onClose }) => {
     name: '',
     category: '',
     buying_price: 0,
+    selling_price : 0,
     quantity: 0,
     unit: '',
     expiry_date: '',
@@ -106,8 +106,8 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ open, onClose }) => {
          {/* Form fields */}
         <Input placeholder="Enter product name" name="name" onChange={handleInputChange} />
         <Select
-        placeholder="Select product category"
-        dropdownRender={(menu) => (
+          placeholder="Select product category"
+          dropdownRender={(menu) => (
           <>
             {menu}
             <Divider style={{ margin: '8px 0' }} />
@@ -129,6 +129,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({ open, onClose }) => {
         onChange={(value) => handleSelectChange(value, 'category')}
       />
         <Input placeholder="Enter buying price" name="buying_price" onChange={handleInputChange} />
+        <Input placeholder="Enter selling price" name="selling_price" onChange={handleInputChange} />
         <Input placeholder="Enter product quantity" name="quantity" onChange={handleInputChange} />
         <Input placeholder="Enter product unit" name="unit" onChange={handleInputChange} />
         <DatePicker name='expiry_date' placeholder="Enter expiry date" onChange={handleDateChange} />

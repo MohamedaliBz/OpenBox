@@ -133,8 +133,8 @@ const AddUserModal: React.FC<AddUserModalProps> = ({ open, onClose }) => {
             
           >
             <Option value="Admin">Admin</Option>
-            <Option value="Stock_Manager">Stock Manager</Option>
-            <Option value="Warehouse_Manager">Warehouse Manager</Option>
+            <Option value="Stock Manager">Stock Manager</Option>
+            <Option value="Warehouse Manager">Warehouse Manager</Option>
           </Select>
     </Modal>
   );

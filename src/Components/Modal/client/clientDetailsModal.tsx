@@ -143,10 +143,10 @@ export const ClientDetailsModal: React.FC<userDetailsModalProps> = ({ currentCli
                         <Input value={editedClient.phone_number} name="phone_number" onChange={handleInputChange} />
                     </Descriptions.Item>
                     <Descriptions.Item label="Email">
-                        <Input value={editedClient.email} name="Email" onChange={handleInputChange} />
+                        <Input value={editedClient.email} name="email" onChange={handleInputChange} />
                     </Descriptions.Item>
                     <Descriptions.Item label="Adress">
-                        <Input value={editedClient.adresse} name="Adress" onChange={handleInputChange} />
+                        <Input value={editedClient.adresse} name="adresse" onChange={handleInputChange} />
                     </Descriptions.Item>
             </Descriptions>
         </>

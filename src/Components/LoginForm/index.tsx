@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import google from '../../Assets/images/google.png';
 import './index.css';
-import { useLoginMutation } from '../../Model/Services/auth';
+import { LoginMutation } from '../../Model/Services/auth';
 
 interface MyFormProps {
     children?: ReactNode; 
@@ -20,10 +20,10 @@ export const  MyForm: React.FC<MyFormProps> =  ({ children, nameButton }: MyForm
         email: '',
         password: ''
     };
-    const { mutate, isLoading} = useLoginMutation();
+    const { mutate : Login, isLoading} = LoginMutation();
     const handleSubmit = async (values: MyFormValues) => {
         const { email,password } = values;
-        mutate(values);
+        Login(values);
     };
     
     return (
